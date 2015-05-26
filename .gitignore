@@ -1,8 +1,6 @@
-/bin/
-/data/
-/index/
-/javadoc/
 *~
+/bin/
+/javadoc/
 .project
 .classpath
 /.idea/
