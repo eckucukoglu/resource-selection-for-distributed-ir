@@ -5,8 +5,8 @@ import json
 
 def print_usage():
     print "WRONG USAGE: Directory path that contains documents must be provided."
-    print "python _2_url_analyzer.py [INPUT_DIRECTORY_PATH]"
-    print "Ex:    _2_url_analyzer.py govDatDocuments"
+    print "python 2_url_analyzer.py [INPUT_DIRECTORY_PATH]"
+    print "Ex:    2_url_analyzer.py govDatDocuments"
 
 if len(sys.argv) < 2:
     print_usage()

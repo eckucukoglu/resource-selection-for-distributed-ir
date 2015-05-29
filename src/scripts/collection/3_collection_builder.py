@@ -5,8 +5,8 @@ import shutil
 
 def print_usage():
     print "WRONG USAGE: Directory path that contains documents, number of collection and desired output location must be provided."
-    print "python _3_collection_builder.py [INPUT_DIRECTORY_PATH] [NO_OF_COLLECTION_TO_BE_CREATED] [OUTPUT_DIRECTORY_PATH]"
-    print "Ex:    _3_collection_builder.py govDatDocuments 100 govDatCollections"
+    print "python 3_collection_builder.py [INPUT_DIRECTORY_PATH] [NO_OF_COLLECTION_TO_BE_CREATED] [OUTPUT_DIRECTORY_PATH]"
+    print "Ex:    3_collection_builder.py govDatDocuments 100 govDatCollections"
 
 if len(sys.argv) < 3:
     print_usage()
@@ -15,7 +15,7 @@ if len(sys.argv) < 3:
 # #
 # Create output directory 
 if os.path.exists(sys.argv[3]):
-    print "cannot create output directory '" + sys.argv[3] + "': File exists"
+    print "cannot create output directory '" + sys.argv[3] + "': Directory exists"
     sys.exit()
 os.mkdir(sys.argv[3])
 

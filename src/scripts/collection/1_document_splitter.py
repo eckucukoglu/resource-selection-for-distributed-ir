@@ -4,8 +4,8 @@ import re
 
 def print_usage():
     print "WRONG USAGE: Directory path that contains input collections and desired output location must be provided."
-    print "python _1_document_splitter.py [INPUT_DIRECTORY_PATH] [OUTPUT_DIRECTORY_PATH]"
-    print "Ex:    _1_document_splitter.py govDat govDatDocuments"
+    print "python 1_document_splitter.py [INPUT_DIRECTORY_PATH] [OUTPUT_DIRECTORY_PATH]"
+    print "Ex:    1_document_splitter.py data/gov2 govDatDocuments"
 
 if len(sys.argv) < 3:
     print_usage()
@@ -14,7 +14,7 @@ if len(sys.argv) < 3:
 # #
 # Create output directory 
 if os.path.exists(sys.argv[2]):
-    print "cannot create output directory '" + sys.argv[2] + "': File exists"
+    print "cannot create output directory '" + sys.argv[2] + "': Directory exists"
     sys.exit()
 os.mkdir(sys.argv[2])
 

@@ -5,8 +5,8 @@ import random
 
 def print_usage():
     print "WRONG USAGE: Directory path that contains collections, sample percentage and desired output location must be provided."
-    print "python _4_collection_sampler.py [INPUT_DIRECTORY_PATH] [PERCENTAGE_OF_COLLECTIONS_TO_BE_SAMPLED] [OUTPUT_DIRECTORY_PATH]"
-    print "Ex:    _4_collection_sampler.py govDatCollections 10 govDatSamples"
+    print "python 4_collection_sampler.py [INPUT_DIRECTORY_PATH] [PERCENTAGE_OF_COLLECTIONS_TO_BE_SAMPLED] [OUTPUT_DIRECTORY_PATH]"
+    print "Ex:    4_collection_sampler.py govDatCollections 5 govDatSamples"
 
 if len(sys.argv) < 3:
     print_usage()
@@ -15,7 +15,7 @@ if len(sys.argv) < 3:
 # #
 # Create output directory 
 if os.path.exists(sys.argv[3]):
-    print "cannot create output directory '" + sys.argv[3] + "': File exists"
+    print "cannot create output directory '" + sys.argv[3] + "': Directory exists"
     sys.exit()
 os.mkdir(sys.argv[3])
 
