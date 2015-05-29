@@ -1,0 +1,6 @@
+Collection scripts' output files are in here.
+
+hosts_analysis.json:	For each host, #documents and document names.
+hosts_analysis_readable.json:	Readable version of hosts analysis.
+govDatCollections/xx/*:	Collections generated from gov2 data. xx represents collection id.
+govDatSamples/*-xx:	Sampled documents from collections. xx represents document's owner collection id.
