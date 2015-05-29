@@ -1,6 +1,7 @@
 package demo;
 
 import java.io.InputStream;
+import java.util.Properties;
 
 import org.apache.lucene.document.Field;
 import org.w3c.dom.Element;
@@ -11,11 +12,18 @@ import org.w3c.tidy.Tidy;
 
 public class JTidyHTMLHandler {
 
-    public org.apache.lucene.document.Document getDocument(InputStream is) {
+    @SuppressWarnings("deprecation")
+	public org.apache.lucene.document.Document getDocument(InputStream is) {
+    	
+    	Properties oProps = new Properties();
+    	oProps.setProperty("new-blocklevel-tags", "doc docno dochdr");
+    	
         Tidy tidy = new Tidy();
         tidy.setQuiet(true);
         tidy.setShowWarnings(false);
+        tidy.setConfigurationFromProps(oProps);
         org.w3c.dom.Document root = tidy.parseDOM(is, null);
+        
         Element rawDoc = root.getDocumentElement();
 
         org.apache.lucene.document.Document doc =
