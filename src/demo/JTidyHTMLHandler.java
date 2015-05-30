@@ -17,7 +17,6 @@ public class JTidyHTMLHandler {
     	
     	Properties oProps = new Properties();
     	oProps.setProperty("new-blocklevel-tags", "doc docno dochdr");
-    	
         Tidy tidy = new Tidy();
         tidy.setQuiet(true);
         tidy.setShowWarnings(false);
@@ -74,6 +73,9 @@ public class JTidyHTMLHandler {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
+            if (child.getNodeName().equals("dochdr") || 
+            		child.getNodeName().equals("docno"))
+            	continue;
             switch (child.getNodeType()) {
                 case Node.ELEMENT_NODE:
                     sb.append(getText(child));
