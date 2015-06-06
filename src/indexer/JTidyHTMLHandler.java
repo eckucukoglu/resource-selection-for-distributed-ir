@@ -27,7 +27,7 @@ public class JTidyHTMLHandler {
 		Element rawDoc = root.getDocumentElement();
 		
 		org.apache.lucene.document.Document doc =
-		new org.apache.lucene.document.Document();
+				new org.apache.lucene.document.Document();
 		
 		String body = getBody(rawDoc);
 		
@@ -36,24 +36,6 @@ public class JTidyHTMLHandler {
 		}
 		
 		return doc;
-	}
-	
-	protected String getTitle(Element rawDoc) {
-		if (rawDoc == null) {
-			return null;
-		}
-		
-		String title = "";
-		
-		NodeList children = rawDoc.getElementsByTagName("title");
-		if (children.getLength() > 0) {
-			Element titleElement = ((Element) children.item(0));
-			Text text = (Text) titleElement.getFirstChild();
-			if (text != null) {
-				title = text.getData();
-			}
-		}
-		return title;
 	}
 	
 	protected String getBody(Element rawDoc) {
@@ -74,6 +56,9 @@ public class JTidyHTMLHandler {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);
+            if (child.getNodeName().equals("dochdr") || 
+            		child.getNodeName().equals("docno"))
+            	continue;
 			switch (child.getNodeType()) {
 				case Node.ELEMENT_NODE:
 				sb.append(getText(child));

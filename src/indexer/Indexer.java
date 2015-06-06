@@ -18,29 +18,35 @@ public class Indexer {
 	*/
 	public static void main(String[] args) {
 		
+		// Document collection directory path
 		Path path = Paths.get(System.getProperty("user.dir"), "data", "processed-gov2", "govDatSamples");
 		String docsPath = path.toString();
+		// Index files directory path
 		path = Paths.get(System.getProperty("user.dir"), "data", "index");
 		String indexPath = path.toString();
+		// Query list file path
+		path = Paths.get(System.getProperty("user.dir"), "data", "queries", "0");
+		String queryListPath = path.toString();
+		// Top-K documents retrieved
+		int K = 50;
 		
-		boolean isUpdate = false;
-		
-		IndexFiles indexFile = new IndexFiles(docsPath, indexPath, isUpdate);
+		IndexFiles indexFile = new IndexFiles(docsPath, indexPath);
 		
 		try {
-			SearchFiles searchFile = new SearchFiles(sfInput);
+			SearchFiles searchFile = new SearchFiles(indexPath, queryListPath, K);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		
+		
+			
 //		try {
-//			String path = new File("").getAbsolutePath();
-//			path = path.concat("/data/processed-gov2/govDatSamples/GX000-00-0758811-3");
+//			path = Paths.get(System.getProperty("user.dir"), "data", "processed-gov2", "govDatSamples", "GX000-00-0758811-3");
+//			String tmp = path.toString();
 //			
-//			InputStream stream = new FileInputStream(new File(path));
+//			InputStream stream = new FileInputStream(new File(tmp));
 //			JTidyHTMLHandler handler = new JTidyHTMLHandler();
 //			Document myDoc = handler.getDocument(stream);
+//			
 //			System.out.println(myDoc.getField("contents"));
 //			
 //		} catch (FileNotFoundException e) {
@@ -49,5 +55,4 @@ public class Indexer {
 //		}
 		
 	}
-	
 }
