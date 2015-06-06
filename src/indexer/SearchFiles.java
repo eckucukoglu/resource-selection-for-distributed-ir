@@ -21,12 +21,14 @@ import org.apache.lucene.store.FSDirectory;
 
 public class SearchFiles {
 	
+	private String indexDir;
 	private ArrayList<TopDocs> topDocsList = new ArrayList<TopDocs>();
 	
 	public void search (String index, String queries, int K) throws Exception {
 		
 		String field = "contents";
-			
+		this.indexDir = index;
+		
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
 		IndexSearcher searcher = new IndexSearcher(reader);
 		Analyzer analyzer = new StandardAnalyzer();
@@ -62,24 +64,23 @@ public class SearchFiles {
 		return topDocsList;
 	}
 	
-	public static TopDocs doSearch (IndexSearcher searcher, Query query,
-			int K) throws IOException {
+	public String[] getNames (TopDocs results) throws IOException {
 		
-		TopDocs results = searcher.search(query, K);
+		IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(this.indexDir)));
+		IndexSearcher searcher = new IndexSearcher(reader);
 		ScoreDoc[] hits = results.scoreDocs;
-		
 		int numTotalHits = results.totalHits;
-		System.out.println(numTotalHits + " total matching documents");
-		
-		int end = Math.min(numTotalHits, K);
+		int end = Math.min(numTotalHits, hits.length);
+		String[] resultDocNames = new String[end];
 		
 		for (int i = 0; i < end; i++) {
 			Document doc = searcher.doc(hits[i].doc);
 			String name = doc.get("name");
 			
-			System.out.println((i+1) + ". " + name + " score="+hits[i].score);
+			resultDocNames[i] = name;
+			
 		}
 		
-		return results;
+		return resultDocNames;
 	}
 }
