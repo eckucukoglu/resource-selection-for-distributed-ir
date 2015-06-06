@@ -7,7 +7,7 @@ from datetime import datetime
 def print_usage():
     print "WRONG USAGE: Directory path that contains query logs must be provided."
     print "python 4_host_clicks.py [QUERY_LOGS_PATH] [MAX_NUMBER_OF_QUERY] [MIN_COLLECTION_SIZE]"
-    print "Ex:    4_host_clicks.py data/aol 50 50"
+    print "Ex:    4_host_clicks.py data/aol 50 100"
 
 if len(sys.argv) < 4:
     print_usage()
@@ -43,7 +43,8 @@ for i in range(len(hosts_analysis)):
     host_query_dict.append(collection_dict)
 
 for filename in os.listdir(sys.argv[1]):
-    # start_time = datetime.now()
+    print filename
+    start_time = datetime.now()
 
     aol_log = open(sys.argv[1] + "/" + filename)
     aol_log_read = aol_log.readlines()
@@ -78,9 +79,9 @@ for filename in os.listdir(sys.argv[1]):
                 host_query_dict[index]['hit_queries'].append(query_dict)
                 # Click data already assosiated with one of the hosts, no need for furthere host control
                 break
-    # end_time = datetime.now()
-    # print "Started at: ", start_time.strftime("%H:%M:%S")
-    # print "Ended at:   ", end_time.strftime("%H:%M:%S")
+    end_time = datetime.now()
+    print "Started at: ", start_time.strftime("%H:%M:%S")
+    print "Ended at:   ", end_time.strftime("%H:%M:%S")
 
 queries_json_file = open("queries_analysis.json","w")
 json.dump(host_query_dict, queries_json_file)
