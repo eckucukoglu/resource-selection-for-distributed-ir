@@ -24,13 +24,13 @@ for index, click_data in enumerate(click_datas):
 	training_queries_file = open(sys.argv[3] + "/" + "training-queries" + "/" + str(click_data['collection_id']),'w')
 	for training_query in training_queries:
 		training_queries_file.write(training_query['query'])
-		training_queries_file.write("\n\r")
+		training_queries_file.write("\n")
 	training_queries_file.close()
 	
 	test_queries_file = open(sys.argv[3] + "/" + "test-queries" + "/" + str(click_data['collection_id']),'w')
 	for test_query in test_queries:
 		test_queries_file.write(test_query['query'])
-		test_queries_file.write("\n\r")
+		test_queries_file.write("\n")
 	test_queries_file.close()
 
 	i = i + 1
