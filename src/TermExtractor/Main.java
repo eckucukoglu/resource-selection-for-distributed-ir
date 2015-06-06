@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 
 public class Main {
 
@@ -14,6 +15,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
+		Date start = new Date();
 		for (int i = 0; i < TOTAL_COLLECTION_COUNT; ++i) {
 			Path path = Paths.get(System.getProperty("user.dir"), "data", "processed-gov2", 
 					"govDatCollectionsOnlyText", Integer.toString(i));
@@ -23,9 +25,9 @@ public class Main {
 			path = Paths.get(System.getProperty("user.dir"), "data", "processed-gov2", "govDatCollections", Integer.toString(i));
 			dirPath = path.toString();
 			extractDocs(dirPath, i);
-			
-			System.out.println("Collection " + i + " finished.");
 		}
+		Date end = new Date();
+		System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 	}
 	
 	public static void extractDocs (String dirPath, int colId) {
@@ -41,6 +43,7 @@ public class Main {
 				e.printStackTrace();
 			} catch (StringIndexOutOfBoundsException e) {
 				System.out.println("StringIndexOutOfBoundsException: " + file.getName() + "\tcol: " + colId);
+				saveDoc("", colId, file.getName());
 			}
 		}
 	}
