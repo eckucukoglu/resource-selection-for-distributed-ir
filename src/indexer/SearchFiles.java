@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -20,7 +21,9 @@ import org.apache.lucene.store.FSDirectory;
 
 public class SearchFiles {
 	
-	SearchFiles (String index, String queries, int K) throws Exception {
+	private ArrayList<TopDocs> topDocsList = new ArrayList<TopDocs>();
+	
+	public void search (String index, String queries, int K) throws Exception {
 		
 		String field = "contents";
 			
@@ -47,13 +50,19 @@ public class SearchFiles {
 			
 			System.out.println("Searching for: " + query.toString(field));
 			
-			doSearch(in, searcher, query, K);
-			
+			this.topDocsList.add(searcher.search(query, K));
 		}
 		reader.close();
 	}
 	
-	public static void doSearch (BufferedReader in, IndexSearcher searcher, Query query,
+	/**
+	 * @return the topDocsList
+	 */
+	public ArrayList<TopDocs> getTopDocsList() {
+		return topDocsList;
+	}
+	
+	public static TopDocs doSearch (IndexSearcher searcher, Query query,
 			int K) throws IOException {
 		
 		TopDocs results = searcher.search(query, K);
@@ -70,5 +79,7 @@ public class SearchFiles {
 			
 			System.out.println((i+1) + ". " + name + " score="+hits[i].score);
 		}
+		
+		return results;
 	}
 }

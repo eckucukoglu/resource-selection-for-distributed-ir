@@ -113,3 +113,21 @@ public class IndexFiles {
 		}
 	}
 }
+
+
+//try {
+//path = Paths.get(System.getProperty("user.dir"), "data", "processed-gov2", "govDatSamples", "GX000-00-0355047-3");
+//String test = path.toString();
+//
+//InputStream stream = new FileInputStream(new File(test));
+//
+//JTidyHTMLHandler handler = new JTidyHTMLHandler();
+//
+//Document myDoc = handler.getDocument(stream);
+//
+//System.out.println(myDoc.getField("contents"));
+//
+//} catch (FileNotFoundException e) {
+//// TODO Auto-generated catch block
+//e.printStackTrace();
+//}
