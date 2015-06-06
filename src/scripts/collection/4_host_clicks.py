@@ -56,6 +56,9 @@ for filename in os.listdir(sys.argv[1]):
         # Click data available?
         if line_regexed.group(2) == "":
             continue
+        if line_regexed.group(1) == "-":
+            continue
+            
         for index,host_analysis in enumerate(hosts_analysis):
             # No click data neccessary for collections below threshold
             if len(hosts_analysis[index]['documents']) < int(sys.argv[3]):
