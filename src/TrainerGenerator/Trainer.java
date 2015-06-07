@@ -45,15 +45,23 @@ class Trainer {
             int K = 100000000;
 
             try {
-                SearchFiles searchFile = new SearchFiles();
-                searchFile.search(sampledDocumentsIndexPath, trainingQueriesPath, K);
-                ArrayList<TopDocs> topDocsList = searchFile.getTopDocsList();
+                SearchFiles searchFileSampleDocs = new SearchFiles();
+                searchFileSampleDocs.search(sampledDocumentsIndexPath, trainingQueriesPath, K);
+                ArrayList<TopDocs> topDocsListSampledDocs = searchFileSampleDocs.getTopDocsList();
 
-                for (int j = 0; j < topDocsList.size(); j++) {
-                	TopDocs topDocs = topDocsList.get(j);
-                	String[] names = searchFile.getNames(topDocsList.get(j));
+                SearchFiles searchFilesConcatenatedSampleDocs = new SearchFiles();
+                searchFilesConcatenatedSampleDocs.search(concatenatedSampledDocumentsIndexPath, trainingQueriesPath, K);
+                ArrayList<TopDocs> topDocsListConcatenatedSampleDocs = searchFilesConcatenatedSampleDocs.getTopDocsList();
+
+
+                for (int j = 0; j < topDocsListSampledDocs.size(); j++) {
+                	TopDocs topDocsSampledDocs = topDocsListSampledDocs.get(j);
+                    TopDocs topDocsConcatenatedSampledDocs = topDocsListConcatenatedSampleDocs.get(j);
+
+                    String[] sampledDocsNames = searchFileSampleDocs.getNames(topDocsListSampledDocs.get(j));
+                    String[] concatenatedSampledDocsNames = searchFilesConcatenatedSampleDocs.getNames(topDocsListConcatenatedSampleDocs.get(j));
                 	
-                    CollectionScorer collectionScorer = new CollectionScorer(sampledCollectionIds, topDocs, names);
+                    CollectionScorer collectionScorer = new CollectionScorer(sampledCollectionIds, topDocsSampledDocs, topDocsConcatenatedSampledDocs,sampledDocsNames, concatenatedSampledDocsNames);
                     collectionScorer.scoreCollections();
                 }
 
