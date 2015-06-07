@@ -9,20 +9,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
-public class Main {
+import Utils.Enums;
 
-	public static final int TOTAL_COLLECTION_COUNT = 129;
+/**
+ * Text contents of the HTML documents 
+ * are extracted and stored with
+ * the same name as original documents.
+ */
+public class Extractor {
 
 	public static void main(String[] args) {
 		
 		Date start = new Date();
-		for (int i = 0; i < TOTAL_COLLECTION_COUNT; ++i) {
-			Path path = Paths.get(System.getProperty("user.dir"), "data", "processed-gov2", 
-					"govDatCollectionsOnlyText", Integer.toString(i));
+		for (int i = 0; i < Enums.TOTAL_COLLECTION_COUNT; ++i) {
+			Path path = Paths.get(System.getProperty("user.dir"), Enums.DATA_DIR, 
+					Enums.PROC_GOV2_DATA_DIR, Enums.EXT_COLLECTION_DIR, Integer.toString(i));
 			String dirPath = path.toString();
 			File file = new File(dirPath);
 			file.mkdir();
-			path = Paths.get(System.getProperty("user.dir"), "data", "processed-gov2", "govDatCollections", Integer.toString(i));
+			path = Paths.get(System.getProperty("user.dir"), Enums.DATA_DIR, 
+					Enums.PROC_GOV2_DATA_DIR, Enums.GOV2_COLLECTION_DIR, Integer.toString(i));
 			dirPath = path.toString();
 			extractDocs(dirPath, i);
 		}
@@ -30,6 +36,13 @@ public class Main {
 		System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 	}
 	
+	/**
+	 * Documents in the given directory are extracted
+	 * and stored in the corresponding collection directory.
+	 * 
+	 * @param dirPath documents' directory's path
+	 * @param colId collection id
+	 */
 	public static void extractDocs (String dirPath, int colId) {
 		File folder = new File(dirPath);
 		File[] docs = folder.listFiles();
@@ -42,22 +55,29 @@ public class Main {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (StringIndexOutOfBoundsException e) {
-				System.out.println("StringIndexOutOfBoundsException: " + file.getName() + "\tcol: " + colId);
+				System.out.println("StringIndexOutOfBoundsException: " + 
+						file.getName() + "\tcol: " + colId);
 				saveDoc("", colId, file.getName());
 			}
 		}
 	}
 	
+	/**
+	 * Saves the given content in the file.
+	 * 
+	 * @param content content of the file.
+	 * @param colId collection id.
+	 * @param fileName file name
+	 */
 	public static void saveDoc (String content, int colId, String fileName) {
-		Path path = Paths.get(System.getProperty("user.dir"), "data", "processed-gov2", 
-				"govDatCollectionsOnlyText", Integer.toString(colId),  fileName);
+		Path path = Paths.get(System.getProperty("user.dir"), Enums.DATA_DIR, Enums.PROC_GOV2_DATA_DIR, 
+				Enums.EXT_COLLECTION_DIR, Integer.toString(colId),  fileName);
 		String filePath = path.toString();
 		
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(filePath, "UTF-8");
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		writer.println(content);

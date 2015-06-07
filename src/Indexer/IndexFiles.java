@@ -1,4 +1,4 @@
-package indexer;
+package Indexer;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -11,6 +11,8 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+
+import Utils.Enums;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,7 +29,14 @@ import java.util.Date;
 
 public class IndexFiles {
 	
-	IndexFiles (String docsPath, String indexPath) {
+	/**
+	 * For a given collection, does indexing and stores
+	 * in the index path.
+	 * 
+	 * @param docsPath documents' directory path
+	 * @param indexPath index directory path
+	 */
+	public void index (String docsPath, String indexPath) {
 		
 		final Path docDir = Paths.get(docsPath);
 		
@@ -46,23 +55,8 @@ public class IndexFiles {
 			
 			iwc.setOpenMode(OpenMode.CREATE);
 			
-			// Optional: for better indexing performance, if you
-			// are indexing many documents, increase the RAM
-			// buffer.  But if you do this, increase the max heap
-			// size to the JVM (eg add -Xmx512m or -Xmx1g):
-			//
-			// iwc.setRAMBufferSizeMB(256.0);
-			
 			IndexWriter writer = new IndexWriter(dir, iwc);
 			indexDocs(writer, docDir);
-			
-			// NOTE: if you want to maximize search performance,
-			// you can optionally call forceMerge here.  This can be
-			// a terribly costly operation, so generally it's only
-			// worth it when your index is relatively static (ie
-			// you're done adding documents to it):
-			//
-			// writer.forceMerge(1);
 			
 			writer.close();
 			
@@ -75,6 +69,13 @@ public class IndexFiles {
 		}
 	}
 	
+	/**
+	 * Indexes documents that in the given path.
+	 * 
+	 * @param writer
+	 * @param path
+	 * @throws IOException
+	 */
 	static void indexDocs (final IndexWriter writer, Path path) throws IOException {
 		
 		Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
@@ -90,44 +91,26 @@ public class IndexFiles {
 		});
 	}
 	
+	/**
+	 * Indexes the given file.
+	 * 
+	 * @param writer
+	 * @param file file path
+	 * @throws IOException
+	 */
 	static void indexDoc (IndexWriter writer, Path file) throws IOException {
 		try (InputStream stream = Files.newInputStream(file)) {
 
 			Document doc = new Document();
+			Field pathField = new StringField(Enums.FIELD_NAME, 
+					file.getFileName().toString(), Field.Store.YES);
 			
-			// Add the path of the file as a field named "path".  Use a
-			// field that is indexed (i.e. searchable), but don't tokenize
-			// the field into separate words and don't index term frequency
-			// or positional information:
-			Field pathField = new StringField("name", file.getFileName().toString(), Field.Store.YES);
 			doc.add(pathField);
-					
-			// Add the contents of the file to a field named "contents".  Specify a Reader,
-			// so that the text of the file is tokenized and indexed, but not stored.
-			// Note that FileReader expects the file to be in UTF-8 encoding.
-			// If that's not the case searching for special characters will fail.
-			doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
+			doc.add(new TextField(Enums.FIELD_CONTENT, 
+					new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
 			
 			System.out.println("adding " + file.getFileName());
 			writer.addDocument(doc);
 		}
 	}
 }
-
-
-//try {
-//path = Paths.get(System.getProperty("user.dir"), "data", "processed-gov2", "govDatSamples", "GX000-00-0355047-3");
-//String test = path.toString();
-//
-//InputStream stream = new FileInputStream(new File(test));
-//
-//JTidyHTMLHandler handler = new JTidyHTMLHandler();
-//
-//Document myDoc = handler.getDocument(stream);
-//
-//System.out.println(myDoc.getField("contents"));
-//
-//} catch (FileNotFoundException e) {
-//// TODO Auto-generated catch block
-//e.printStackTrace();
-//}
