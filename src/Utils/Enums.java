@@ -24,6 +24,8 @@ public class Enums {
 	public static final String SAMPLE_DOCS_DIR = "govDatSamples";
 	/** Main index directory  **/
 	public static final String INDEX_DIR = "index";
+	/** Liblinear related files directory **/
+    public static final String LIBLINEAR_DIR = "liblinear";
 	
 	/** Sampled collections collection id list **/
 	public static final String SAMPLED_COLLECTIONS_JSON = "sampled_collections.json";
@@ -33,7 +35,16 @@ public class Enums {
 	
 	/** Pre-processed AOL queries' main directory **/
 	public static final String PROC_AOL_DIR = "processed-aol";
-	
-	/** Training queries are listed in this directory **/
-	public static final String TRAINING_QUERIES_DIR = "training-queries";
+
+    /** Training queries are listed in this directory **/
+    public static final String TRAINING_QUERIES_DIR = "training-queries";
+
+    /** Training queries are listed in this directory **/
+    public static final String TESTING_QUERIES_DIR = "test-queries";
+
+    /** Liblinear training files path * n training files, 1 per collection **/
+    public static final String TRAINING_FILES_DIR = "trainingFiles";
+
+    /** Liblinear training files path * n training files, 1 per collection **/
+    public static final String TESTING_FILES_DIR = "testFiles";
 }

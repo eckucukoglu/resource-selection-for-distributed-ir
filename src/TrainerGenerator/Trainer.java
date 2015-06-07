@@ -33,7 +33,7 @@ class Trainer {
         		Enums.INDEX_DIR, Enums.SAMPLE_DOCS_DIR);
         String sampledDocumentsIndexPath = path.toString();
         // Concatenated sampled documents index path
-        path = Paths.get(System.getProperty("user.dir"), Enums.DATA_DIR, 
+        path = Paths.get(System.getProperty("user.dir"), Enums.DATA_DIR,
         		Enums.INDEX_DIR, Enums.SAMPLE_CONCAT_DIR);
         String concatenatedSampledDocumentsIndexPath = path.toString();
 
@@ -63,14 +63,44 @@ class Trainer {
                 	
                     CollectionScorer collectionScorer = new CollectionScorer(sampledCollectionIds, topDocsSampledDocs, topDocsConcatenatedSampledDocs,sampledDocsNames, concatenatedSampledDocsNames);
                     collectionScorer.scoreCollections();
+                    collectionScorer.writeScoresToCollectionTrainingFiles(i);
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
-            // TODO: remove below break.
-            break;
+
+            path = Paths.get(System.getProperty("user.dir"), Enums.DATA_DIR,
+                    Enums.PROC_AOL_DIR, Enums.TESTING_QUERIES_DIR, sampledCollectionIds.get(i));
+            String testingQueriesPath = path.toString();
+
+            try {
+                SearchFiles searchFileSampleDocs = new SearchFiles();
+                searchFileSampleDocs.search(sampledDocumentsIndexPath, testingQueriesPath, K);
+                ArrayList<TopDocs> topDocsListSampledDocs = searchFileSampleDocs.getTopDocsList();
+
+                SearchFiles searchFilesConcatenatedSampleDocs = new SearchFiles();
+                searchFilesConcatenatedSampleDocs.search(concatenatedSampledDocumentsIndexPath, testingQueriesPath, K);
+                ArrayList<TopDocs> topDocsListConcatenatedSampleDocs = searchFilesConcatenatedSampleDocs.getTopDocsList();
+
+
+                for (int j = 0; j < topDocsListSampledDocs.size(); j++) {
+                    TopDocs topDocsSampledDocs = topDocsListSampledDocs.get(j);
+                    TopDocs topDocsConcatenatedSampledDocs = topDocsListConcatenatedSampleDocs.get(j);
+
+                    String[] sampledDocsNames = searchFileSampleDocs.getNames(topDocsListSampledDocs.get(j));
+                    String[] concatenatedSampledDocsNames = searchFilesConcatenatedSampleDocs.getNames(topDocsListConcatenatedSampleDocs.get(j));
+
+                    CollectionScorer collectionScorer = new CollectionScorer(sampledCollectionIds, topDocsSampledDocs, topDocsConcatenatedSampledDocs,sampledDocsNames, concatenatedSampledDocsNames);
+                    collectionScorer.scoreCollections();
+                    collectionScorer.writeScoresToCollectionTestingFiles(i, j);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
         }
     }
 }
